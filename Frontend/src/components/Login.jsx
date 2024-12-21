@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function Login() {
   const {
@@ -9,18 +11,38 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    console.log("Form data:", data); // Debug to check submitted data
+    const userInfo = {
+      email: data.email,
+      password: data.password,
+    };
+   
+
+    try {
+      const res = await axios.post("http://127.0.0.1:4000/user/login", userInfo);
+      console.log("Response data:", res.data);
+
+      if (res.data) {
+        toast.success("Login Successfully");
+        localStorage.setItem("users", JSON.stringify(res.data.user));
+
+        document.getElementById("my_modal_3").close();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+    } catch (err) {
+      console.error("Error response:", err.response); // Debug error response
+      toast.error(
+        "Error: " +
+          (err.response?.data?.message || "An unknown error occurred.")
+      );
+    }
+  };
 
   return (
     <div>
-      {/* Button to open the modal */}
-      {/* <button
-        className="btn"
-        onClick={() => document.getElementById("my_modal_3").showModal()}
-      >
-        Open Modal
-      </button> */}
-
       {/* Modal */}
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box">

@@ -27,7 +27,7 @@ export default function Banner() {
             <input type="text" className="grow" placeholder="Email" />
           </label>
 
-          <button className="btn btn-secondary mt-6">Subscribe</button>
+          <button className="btn btn-secondary mt-6">Get Started</button>
         </div>
 
         {/* Right Section */}
